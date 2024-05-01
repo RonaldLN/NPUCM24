@@ -12,8 +12,13 @@ if __name__ == '__main__':
     names = ['附件1：Normal_exp', '附件2：EarlyStage_exp', '附件3：LaterStage_exp']
     for n in names:
         # csv2npy(n + '.csv', n + '.npy')
-        data = pd.read_csv(n + '.csv')
-        print(data.values.shape)
+
+        data = np.load(n + '.npy', allow_pickle=True)
+        print(data)
+
+        # 将numpy二维数组转置
+        np.save(n + '_t.npy', data.T)
+        print(data.T)
 
     # data = pd.read_csv('附件1：Normal_exp.csv')
     # print(data.values)
