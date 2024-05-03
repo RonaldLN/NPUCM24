@@ -14,11 +14,14 @@ X = X_train
 y = y_train
 
 # train an XGBoost model (but any other model type would also work)
-model = xgboost.XGBClassifier()
-model.fit(X, y)
+# model = xgboost.XGBClassifier()
+# model.fit(X, y)
 
-with open('xgboost_model.bin', 'wb') as f:
-    pickle.dump(model, f)
+# with open('xgboost_model.bin', 'wb') as f:
+#     pickle.dump(model, f)
+
+model = xgboost.XGBClassifier(n_estimators=1000, max_depth=5, learning_rate=0.01, subsample=0.8, colsample_bytree=0.8)
+model.load_model("xgboost_model.json")
 
 X = X_train[:5]
 y = y_train[:5]
@@ -27,7 +30,7 @@ y = y_train[:5]
 explainer = shap.explainers.Permutation(model.predict_proba, X, max_evals=30000)
 shap_values = explainer(X[:100])
 
-with open('shap_values_xgboost.bin', 'wb') as f:
+with open('shap_values_xgboost_2.bin', 'wb') as f:
     pickle.dump(shap_values, f)
 
 # get just the explanations for the positive class
