@@ -1,0 +1,8 @@
+pandas
+numpy
+shap~=0.45.0
+torch~=2.2.2
+tensorflow~=2.16.1
+matplotlib
+scikit-learn
+xgboost~=2.0.3
