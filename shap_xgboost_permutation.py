@@ -2,13 +2,22 @@ import xgboost
 import numpy as np
 import shap
 import pickle
+import pandas as pd
 
 from train_data import preprocess
+
+# convert `X_train` to pd.DataFrame, and add headers
+def add_headers(X_train):
+    headers = np.load('headers.npy', allow_pickle=True)
+    X_train = pd.DataFrame(X_train, columns=headers)
+    return X_train
 
 # get a dataset on income prediction
 # X, y = shap.datasets.adult()
 data = np.load('merged_data.npy', allow_pickle=True)
 X_train, X_test, y_train, y_test = preprocess(data)
+
+X_train = add_headers(X_train)
 
 X = X_train
 y = y_train
@@ -30,7 +39,7 @@ y = y_train[:5]
 explainer = shap.explainers.Permutation(model.predict_proba, X, max_evals=30000)
 shap_values = explainer(X[:100])
 
-with open('shap_values_xgboost_2.bin', 'wb') as f:
+with open('shap_values_xgboost_3.bin', 'wb') as f:
     pickle.dump(shap_values, f)
 
 # get just the explanations for the positive class
